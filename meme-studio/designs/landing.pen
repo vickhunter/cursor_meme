@@ -1,0 +1,146 @@
+{
+  "$schema": "https://pencil.dev/schemas/pen-v1.json",
+  "format": "pencil-design-brief",
+  "version": 1,
+  "name": "MemeForge — Landing",
+  "description": "Brief Pencil per la landing page di MemeForge. Apri con l'estensione Pencil in Cursor; oppure leggi il JSON e applica direttamente i cambiamenti in app/page.tsx.",
+  "target": {
+    "code": "app/page.tsx",
+    "framework": "next-app-router",
+    "styling": "tailwind-v4",
+    "language": "it"
+  },
+  "canvas": {
+    "width": 1440,
+    "height": 3200,
+    "background": "#ffffff",
+    "darkBackground": "#0a0a0a"
+  },
+  "designTokens": {
+    "primary": "#0a0a0a",
+    "accent": "#c026d3",
+    "accentHover": "#a21caf",
+    "neutralBg": "#fafafa",
+    "neutralBorder": "#e4e4e7",
+    "blurFuchsia": "rgba(217,70,239,0.20)",
+    "blurAmber": "rgba(251,191,36,0.20)",
+    "blurCyan": "rgba(6,182,212,0.15)",
+    "fontDisplay": "Anton, Impact, sans-serif",
+    "fontSans": "Inter, system-ui, sans-serif",
+    "radiusSm": 6,
+    "radiusMd": 10,
+    "radiusLg": 16,
+    "radiusXl": 24
+  },
+  "sections": [
+    {
+      "id": "nav",
+      "kind": "navigation",
+      "height": 56,
+      "sticky": true,
+      "items": [
+        { "type": "brand", "label": "MemeForge", "icon": "sparkles" },
+        { "type": "badge", "label": "modalità locale", "visibility": "when isLocalMode" },
+        { "type": "spacer" },
+        { "type": "link", "label": "Prezzi", "to": "#pricing" },
+        { "type": "link", "label": "GitHub", "to": "https://github.com" },
+        { "type": "cta", "label": "Apri lo Studio", "to": "/studio", "variant": "primary" }
+      ]
+    },
+    {
+      "id": "hero",
+      "kind": "hero",
+      "background": {
+        "type": "radial-blurs",
+        "blobs": [
+          { "color": "blurFuchsia", "x": "-32px", "y": "-32px", "size": "24rem" },
+          { "color": "blurAmber",   "x": "calc(100% - 24rem)", "y": "10rem", "size": "24rem" },
+          { "color": "blurCyan",    "x": "calc(50% - 12rem)", "y": "calc(100% - 12rem)", "size": "24rem" }
+        ]
+      },
+      "content": {
+        "badge": "Costruito al workshop AI Builder",
+        "title": "Un meme. Tutti i formati. Zero fatica.",
+        "titleFont": "Anton",
+        "titleSize": ["3rem", "5rem", "6rem"],
+        "subtitle": "Editor drag-and-drop, esportazione simultanea per Instagram, TikTok, LinkedIn, X e Facebook. Senza account, senza setup.",
+        "ctas": [
+          { "label": "Apri lo Studio", "to": "/studio", "variant": "primary" },
+          { "label": "Guarda i formati", "to": "#formats", "variant": "outline" }
+        ],
+        "preview": {
+          "type": "format-cards",
+          "items": "FORMATS",
+          "layout": "3-cols / 6-cols-md",
+          "style": "alternating-rotate-1deg",
+          "gradient": ["fuchsia→amber", "cyan→blue", "emerald→teal", "orange→red", "violet→fuchsia", "yellow→orange"]
+        }
+      }
+    },
+    {
+      "id": "features",
+      "kind": "feature-grid",
+      "background": "neutralBg",
+      "columns": 3,
+      "items": [
+        {
+          "icon": "layers",
+          "title": "Esportazione multi-formato",
+          "desc": "Un design, sei file pronti per ogni social. Instagram Post, Story, TikTok, Facebook, LinkedIn, X."
+        },
+        {
+          "icon": "palette",
+          "title": "Editor drag-and-drop",
+          "desc": "Trascina immagini, testo, sticker. Cambia colori e font in tempo reale."
+        },
+        {
+          "icon": "zap",
+          "title": "Nessun account, nessun database",
+          "desc": "I tuoi meme restano sul tuo browser. Paga solo se vuoi la versione HD senza watermark."
+        }
+      ]
+    },
+    {
+      "id": "formats",
+      "kind": "format-list",
+      "title": "Sei formati, un click",
+      "subtitle": "Disegna una volta. Scarica un ZIP con tutti i ritagli pronti per la pubblicazione.",
+      "items": "FORMATS",
+      "layout": "2-cols / 3-cols-md"
+    },
+    {
+      "id": "pricing",
+      "kind": "pricing",
+      "background": "neutralBg",
+      "title": "Semplice come deve essere",
+      "tiers": [
+        {
+          "name": "Gratis",
+          "price": "€0",
+          "desc": "Tutti gli strumenti, export con watermark MemeForge.",
+          "cta": { "label": "Inizia gratis", "to": "/studio", "variant": "outline" }
+        },
+        {
+          "name": "HD senza watermark",
+          "price": "€2,99",
+          "per": "per meme",
+          "desc": "Stesso meme, sei file in HD senza watermark. Pagamento unico, niente abbonamento.",
+          "cta": { "label": "Sblocca HD", "to": "/studio", "variant": "accent" },
+          "highlighted": true,
+          "highlightBorder": "accent"
+        }
+      ]
+    },
+    {
+      "id": "footer",
+      "kind": "footer",
+      "content": "Costruito con Cursor + Pencil.dev"
+    }
+  ],
+  "i18nSource": "lib/i18n/it.ts",
+  "notes": [
+    "Tutte le stringhe della landing arrivano da lib/i18n/it.ts (oggetto `t.landing`).",
+    "Quando aggiungi/modifichi testo nel design, aggiorna le chiavi corrispondenti in `lib/i18n/it.ts`.",
+    "I formati social sono importati da lib/formats.ts — non duplicare i valori nel disegno."
+  ]
+}

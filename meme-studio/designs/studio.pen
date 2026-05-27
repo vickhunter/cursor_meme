@@ -1,0 +1,127 @@
+{
+  "$schema": "https://pencil.dev/schemas/pen-v1.json",
+  "format": "pencil-design-brief",
+  "version": 1,
+  "name": "MemeForge — Studio",
+  "description": "Brief Pencil per l'editor di MemeForge. Apri con l'estensione Pencil in Cursor.",
+  "target": {
+    "code": "components/editor/*",
+    "framework": "next-app-router",
+    "styling": "tailwind-v4",
+    "language": "it"
+  },
+  "canvas": {
+    "width": 1440,
+    "height": 900,
+    "background": "#ffffff",
+    "darkBackground": "#0a0a0a"
+  },
+  "designTokens": {
+    "primary": "#0a0a0a",
+    "accent": "#c026d3",
+    "borderLight": "#e4e4e7",
+    "panelBg": "#ffffff",
+    "canvasBg": "#f4f4f5",
+    "fontSans": "Inter, system-ui, sans-serif",
+    "fontDisplay": "Anton, Impact, sans-serif"
+  },
+  "layout": {
+    "type": "grid-rows",
+    "rows": [
+      { "id": "toolbar", "height": 56 },
+      { "id": "workspace", "height": "fill", "columns": [
+        { "id": "canvas", "width": "fill" },
+        { "id": "sidepanel", "width": 360 }
+      ]}
+    ]
+  },
+  "regions": {
+    "toolbar": {
+      "kind": "toolbar",
+      "code": "components/editor/Editor.tsx (Toolbar)",
+      "items": [
+        { "type": "brand", "label": "MemeForge", "icon": "sparkles", "to": "/" },
+        { "type": "divider" },
+        { "type": "title-input", "binding": "meme.title", "width": 256 },
+        { "type": "status", "text": "Salvato automaticamente" },
+        { "type": "spacer" },
+        { "type": "badge", "label": "modalità locale", "visibility": "when isLocalMode", "tone": "amber" },
+        { "type": "badge", "label": "HD sbloccato", "visibility": "when unlocked", "tone": "emerald" },
+        { "type": "button", "label": "Aggiungi testo", "variant": "ghost", "icon": "type" },
+        { "type": "button", "label": "Aggiungi rettangolo", "variant": "ghost", "icon": "image" },
+        { "type": "button", "label": "Scarica ZIP (con watermark)", "variant": "secondary", "icon": "download" },
+        { "type": "button", "label": "Sblocca HD (€2,99)", "variant": "accent", "icon": "lock", "stateVariants": {
+          "unlocked": { "label": "Scarica ZIP HD", "icon": "download", "variant": "primary" },
+          "local": { "label": "Scarica HD (locale, gratis)", "icon": "download", "variant": "primary" }
+        }}
+      ]
+    },
+    "canvas": {
+      "kind": "konva-stage",
+      "code": "components/editor/Canvas.tsx",
+      "background": "canvasBg",
+      "behavior": "centers and scales the working format to fit the viewport",
+      "overlays": [
+        { "type": "empty-state", "text": "Trascina un'immagine o aggiungi del testo per iniziare" },
+        { "type": "size-indicator", "position": "bottom-right", "text": "{format.w}×{format.h} · {zoom}%" }
+      ],
+      "interactions": [
+        "click to select",
+        "drag to move",
+        "transformer handles to resize/rotate",
+        "click empty area to deselect"
+      ]
+    },
+    "sidepanel": {
+      "kind": "side-panel",
+      "code": "components/editor/SidePanel.tsx",
+      "border": "left 1px borderLight",
+      "padding": 16,
+      "header": {
+        "type": "format-select",
+        "label": "Formato di lavoro",
+        "options": "FORMATS"
+      },
+      "tabs": [
+        {
+          "id": "design",
+          "icon": "palette",
+          "label": "Design",
+          "blocks": [
+            { "type": "color-row", "label": "Sfondo", "binding": "scene.background", "preset": "PRESET_COLORS[0..6]" },
+            { "type": "layer-list", "binding": "scene.nodes", "actions": ["select", "front", "back", "delete"] }
+          ]
+        },
+        {
+          "id": "images",
+          "icon": "image",
+          "label": "Immagini",
+          "blocks": [
+            { "type": "search-input", "placeholder": "es. gatto, pizza, cane", "endpoint": "/api/images" },
+            { "type": "button-upload", "label": "Carica immagine", "accept": "image/*" },
+            { "type": "results-grid", "columns": 2 }
+          ]
+        },
+        {
+          "id": "text",
+          "icon": "type",
+          "label": "Testo",
+          "blocks": [
+            { "type": "text-input", "label": "Contenuto", "binding": "selected.text" },
+            { "type": "font-select", "binding": "selected.fontFamily", "options": "FONT_FAMILIES" },
+            { "type": "range", "label": "Dimensione", "binding": "selected.fontSize", "min": 16, "max": 240 },
+            { "type": "color-row", "label": "Colore", "binding": "selected.fill" },
+            { "type": "color-row", "label": "Colore bordo", "binding": "selected.stroke" },
+            { "type": "range", "label": "Bordo", "binding": "selected.strokeWidth", "min": 0, "max": 20 }
+          ]
+        }
+      ]
+    }
+  },
+  "notes": [
+    "Tutte le stringhe sono in lib/i18n/it.ts (oggetto `t.studio`).",
+    "I PRESET_COLORS e FONT_FAMILIES sono in components/editor/fonts.ts.",
+    "I formati sono in lib/formats.ts.",
+    "L'editor usa react-konva: gli aggiornamenti vanno tutti attraverso scene/onChange (immutabile)."
+  ]
+}
