@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.17.0/.schema/devbox.schema.json",
+  "packages": [
+    "nodejs@22.22.1",
+    "pnpm@10.10.0"
+  ],
+  "shell": {
+    "init_hook": [
+      "echo 'MemeForge Starter — workshop dev env ready (Node $(node -v) · pnpm $(pnpm -v))' > /dev/null"
+    ],
+    "scripts": {
+      "install": ["pnpm install --frozen-lockfile"],
+      "dev": ["pnpm dev"],
+      "build": ["pnpm build"],
+      "lint": ["pnpm lint"],
+      "typecheck": ["pnpm tsc --noEmit"]
+    }
+  }
+}

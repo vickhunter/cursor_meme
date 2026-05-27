@@ -1,0 +1,54 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files — by default ignored, but three are committed for the workshop:
+#   .env.example      → docs / placeholder
+#   .envrc            → direnv path (Mac/Linux): shared workshop defaults
+#   .env.development  → Next.js path (Windows-friendly): same values as .envrc
+.env*
+!.env.example
+!.envrc
+!.env.development
+
+# Personal overrides (per-attendee, never committed)
+.envrc.local
+.env.local
+
+# devbox local cache (devbox.json + devbox.lock are tracked, .devbox is not)
+.devbox/
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
