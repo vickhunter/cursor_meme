@@ -7,7 +7,17 @@ export const t = {
     studio: "Studio",
     pricing: "Prezzi",
     github: "GitHub",
+    privacy: "Privacy",
     openStudio: "Apri lo Studio",
+  },
+  legal: {
+    privacyTitle: "Informativa sulla privacy",
+    privacyIntro:
+      "Questa informativa spiega come MemeForge tratta i dati personali quando usi il sito, in conformità al Regolamento (UE) 2016/679 (GDPR) e alla normativa italiana applicabile.",
+    backHome: "Torna alla home",
+    lastUpdated: "Ultimo aggiornamento",
+    contactLabel: "Contatti privacy",
+    footerPrivacy: "Privacy Policy",
   },
   landing: {
     heroBadge: "Costruito al workshop AI Builder",

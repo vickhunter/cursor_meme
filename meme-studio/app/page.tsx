@@ -281,6 +281,14 @@ function Footer() {
           {t.landing.footerMadeWith} · ©{" "}
           {new Date().getFullYear()} {t.app.name}
         </p>
+        <p className="mt-2">
+          <Link
+            href="/privacy"
+            className="text-zinc-600 underline-offset-2 hover:text-zinc-900 hover:underline dark:text-zinc-400 dark:hover:text-zinc-50"
+          >
+            {t.legal.footerPrivacy}
+          </Link>
+        </p>
       </div>
     </footer>
   )
