@@ -35,6 +35,8 @@ function loadImageEl(src: string): Promise<HTMLImageElement> {
   })
 }
 
+const VIDEO_LOAD_TIMEOUT_MS = 15_000
+
 function loadVideoEl(src: string): Promise<HTMLVideoElement> {
   return new Promise((resolve, reject) => {
     const v = document.createElement("video")
@@ -45,19 +47,42 @@ function loadVideoEl(src: string): Promise<HTMLVideoElement> {
     v.loop = false
     v.playsInline = true
     v.preload = "auto"
-    v.src = src
-    const onReady = () => {
+
+    let settled = false
+    const cleanup = () => {
       v.removeEventListener("loadeddata", onReady)
+      v.removeEventListener("canplay", onReady)
       v.removeEventListener("error", onError)
+      clearTimeout(timer)
+    }
+    const onReady = () => {
+      if (settled) return
+      settled = true
+      cleanup()
       resolve(v)
     }
     const onError = () => {
-      v.removeEventListener("loadeddata", onReady)
-      v.removeEventListener("error", onError)
+      if (settled) return
+      settled = true
+      cleanup()
       reject(new Error(`video load failed: ${src}`))
     }
     v.addEventListener("loadeddata", onReady)
+    v.addEventListener("canplay", onReady)
     v.addEventListener("error", onError)
+
+    const timer = setTimeout(() => {
+      if (settled) return
+      settled = true
+      cleanup()
+      reject(new Error(`video load timed out (>${VIDEO_LOAD_TIMEOUT_MS}ms): ${src}`))
+    }, VIDEO_LOAD_TIMEOUT_MS)
+
+    v.src = src
+    try {
+      v.load()
+    } catch {
+    }
   })
 }
 
@@ -230,15 +255,31 @@ function paintFrame(
   ctx.restore()
 
   if (watermarked) {
-    const fontSize = Math.max(18, Math.floor(target.h * 0.028))
-    const padding = Math.floor(fontSize * 0.6)
+    const diagSize = Math.floor(Math.min(target.w, target.h) * 0.11)
     ctx.save()
-    ctx.font = `bold ${fontSize}px Impact, "Arial Black", sans-serif`
+    ctx.translate(target.w / 2, target.h / 2)
+    ctx.rotate((-28 * Math.PI) / 180)
+    ctx.font = `bold ${diagSize}px Impact, "Arial Black", sans-serif`
+    ctx.textBaseline = "middle"
+    ctx.textAlign = "center"
+    ctx.lineJoin = "round"
+    ctx.lineWidth = Math.max(1, Math.floor(diagSize * 0.04))
+    ctx.strokeStyle = "rgba(0,0,0,0.22)"
+    ctx.fillStyle = "rgba(255,255,255,0.32)"
+    const diagText = `${watermarkLabel} · FREE`
+    ctx.strokeText(diagText, 0, 0)
+    ctx.fillText(diagText, 0, 0)
+    ctx.restore()
+
+    const cornerSize = Math.max(22, Math.floor(target.h * 0.034))
+    const padding = Math.floor(cornerSize * 0.6)
+    ctx.save()
+    ctx.font = `bold ${cornerSize}px Impact, "Arial Black", sans-serif`
     ctx.textBaseline = "alphabetic"
     ctx.textAlign = "left"
     ctx.lineJoin = "round"
-    ctx.lineWidth = Math.max(1, Math.floor(fontSize * 0.06))
-    ctx.strokeStyle = "rgba(0,0,0,0.7)"
+    ctx.lineWidth = Math.max(1, Math.floor(cornerSize * 0.06))
+    ctx.strokeStyle = "rgba(0,0,0,0.75)"
     ctx.fillStyle = "rgba(255,255,255,0.95)"
     const ty = target.h - padding
     ctx.strokeText(watermarkLabel, padding, ty)
@@ -275,19 +316,30 @@ async function recordFormat({
   paintFrame(ctx, scene, source, target, media, watermarked, watermarkLabel)
 
   const mime = pickMimeType()
+  if (typeof canvas.captureStream !== "function") {
+    throw new Error("canvas.captureStream non è supportato in questo browser.")
+  }
   const stream = canvas.captureStream(fps)
   const recorder = new MediaRecorder(stream, {
     mimeType: mime || undefined,
-    videoBitsPerSecond: 4_500_000,
+    videoBitsPerSecond: 2_500_000,
   })
   const chunks: Blob[] = []
   recorder.ondataavailable = (e) => {
     if (e.data.size > 0) chunks.push(e.data)
   }
 
-  const finished = new Promise<Blob>((resolve) => {
+  const finished = new Promise<Blob>((resolve, reject) => {
+    const stopTimer = setTimeout(() => {
+      reject(new Error("MediaRecorder.stop() non ha emesso onstop in tempo."))
+    }, 8000)
     recorder.onstop = () => {
+      clearTimeout(stopTimer)
       resolve(new Blob(chunks, { type: mime || "video/webm" }))
+    }
+    recorder.onerror = (ev) => {
+      clearTimeout(stopTimer)
+      reject(new Error(`MediaRecorder error: ${(ev as ErrorEvent).message ?? "unknown"}`))
     }
   })
 

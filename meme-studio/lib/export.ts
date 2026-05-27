@@ -125,21 +125,43 @@ function paintScene(
 
 function paintWatermark(stage: Konva.Stage, target: SocialFormat, label: string) {
   const watermarkLayer = new Konva.Layer({ listening: false })
-  const fontSize = Math.max(18, Math.floor(target.h * 0.028))
-  const padding = Math.floor(fontSize * 0.6)
 
-  const wm = new Konva.Text({
+  const diagonalText = `${label} · FREE`
+  const diagSize = Math.floor(Math.min(target.w, target.h) * 0.11)
+  const diag = new Konva.Text({
+    text: diagonalText,
+    fontFamily: "Impact, Arial Black, sans-serif",
+    fontSize: diagSize,
+    fontStyle: "bold",
+    fill: "rgba(255,255,255,0.32)",
+    stroke: "rgba(0,0,0,0.22)",
+    strokeWidth: Math.max(1, Math.floor(diagSize * 0.04)),
+    align: "center",
+    listening: false,
+  })
+  diag.offsetX(diag.width() / 2)
+  diag.offsetY(diag.height() / 2)
+  diag.x(target.w / 2)
+  diag.y(target.h / 2)
+  diag.rotation(-28)
+  watermarkLayer.add(diag)
+
+  const cornerSize = Math.max(22, Math.floor(target.h * 0.034))
+  const padding = Math.floor(cornerSize * 0.6)
+  const corner = new Konva.Text({
     text: label,
     fontFamily: "Impact, Arial Black, sans-serif",
-    fontSize,
-    fill: "rgba(255,255,255,0.95)",
-    stroke: "rgba(0,0,0,0.7)",
-    strokeWidth: Math.max(1, Math.floor(fontSize * 0.06)),
+    fontSize: cornerSize,
     fontStyle: "bold",
+    fill: "rgba(255,255,255,0.95)",
+    stroke: "rgba(0,0,0,0.75)",
+    strokeWidth: Math.max(1, Math.floor(cornerSize * 0.06)),
+    listening: false,
   })
-  wm.x(padding)
-  wm.y(target.h - fontSize - padding)
-  watermarkLayer.add(wm)
+  corner.x(padding)
+  corner.y(target.h - cornerSize - padding)
+  watermarkLayer.add(corner)
+
   stage.add(watermarkLayer)
 }
 

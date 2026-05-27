@@ -94,8 +94,12 @@ export const t = {
     download: "Scarica ZIP (con watermark)",
     downloadHd: "Sblocca HD (€2,99)",
     downloadLocal: "Scarica HD (locale, gratis)",
+    downloadUnlocked: "Scarica ZIP (senza watermark)",
     downloadedToast: "Meme scaricati nel tuo computer",
     exporting: "Generazione in corso…",
+    exportingProgress: "Esportazione",
+    exportError:
+      "Errore durante l'esportazione. Riprova o controlla la console per dettagli.",
     unlockedBadge: "HD sbloccato",
     localModeBadge: "Modalità locale",
     saved: "Salvato automaticamente",

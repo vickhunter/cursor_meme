@@ -48,7 +48,9 @@ function Nav({ isLocalMode }: { isLocalMode: boolean }) {
           {t.nav.pricing}
         </Link>
         <Link
-          href="https://github.com"
+          href="https://github.com/vickhunter/cursor_meme"
+          target="_blank"
+          rel="noopener noreferrer"
           className="hidden px-3 py-2 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 md:inline-block"
         >
           {t.nav.github}

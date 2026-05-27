@@ -1,0 +1,73 @@
+{
+  "$schema": "https://pencil.dev/schemas/pen-v1.json",
+  "format": "pencil-design-brief",
+  "version": 1,
+  "name": "MemeForge — Dashboard SaaS",
+  "description": "SaaS dashboard: progetti, dettaglio, esportazioni, empty state. Canvas visivo creato in Pencil — salva dal editor se non presente su disco.",
+  "target": {
+    "code": "app/(app)/page.tsx",
+    "routes": ["/app", "/app/projects", "/app/projects/[id]", "/app/exports"],
+    "framework": "next-app-router",
+    "styling": "tailwind-v4",
+    "language": "it"
+  },
+  "canvas": { "width": 1440, "height": 900, "background": "#ffffff", "darkBackground": "#0a0a0a" },
+  "designTokens": {
+    "primary": "#0a0a0a",
+    "accent": "#c026d3",
+    "accentHover": "#a21caf",
+    "neutralBg": "#fafafa",
+    "neutralBorder": "#e4e4e7",
+    "success": "#10b981",
+    "fontDisplay": "Anton, Impact, sans-serif",
+    "fontSans": "Inter, system-ui, sans-serif",
+    "radiusMd": 10,
+    "radiusLg": 16
+  },
+  "reusableComponents": [
+    "SidebarNav (240px): Progetti, Nuovo meme, Esportazioni, Piano e fatturazione, Impostazioni; footer Piano Free + Passa a Pro + usage 12/50 HD",
+    "MemeCard: gradient thumb, lock €2,99 badge, title, date, format chips",
+    "Button/Primary, Button/Secondary, Button/Ghost, Badge"
+  ],
+  "screens": [
+    {
+      "id": "projects-home",
+      "route": "/app",
+      "name": "Projects Home",
+      "layout": "sidebar + main",
+      "regions": {
+        "topBar": { "greeting": "Ciao, Marco", "search": "Cerca nei tuoi meme", "cta": "Nuovo meme" },
+        "upsell": { "title": "Esporta senza watermark con Pro — da €9/mese", "secondary": "oppure €2,99 per singolo meme HD", "actions": ["Passa a Pro", "Scopri i piani"] },
+        "stats": ["Meme questo mese: 24", "Esportazioni HD: 18", "Piano: Free"],
+        "grid": "6 MemeCard con titoli esempio; Vedi tutti"
+      }
+    },
+    {
+      "id": "project-detail",
+      "route": "/app/projects/[id]",
+      "breadcrumb": "Progetti → {title}",
+      "preview": "480×480 gradient",
+      "meta": ["formati", "ultima modifica", "HD sbloccato badge"],
+      "actions": ["Apri nello Studio", "Scarica ZIP", "Sblocca HD (€2,99)"]
+    },
+    {
+      "id": "exports-history",
+      "route": "/app/exports",
+      "table": ["Data", "Meme", "Tipo (HD Pro / €2,99 / ZIP watermark)", "Stato", "Scarica"]
+    },
+    {
+      "id": "empty-state",
+      "route": "/app (no projects)",
+      "content": "Crea il tuo primo meme + CTA Nuovo meme"
+    }
+  ],
+  "billingCues": {
+    "hybrid": true,
+    "perMemeHd": "€2,99 on MemeCard lock badge",
+    "subscription": "sidebar Free + Pro upsell strip + stats Piano"
+  },
+  "agentNotes": [
+    "Apri in Pencil e sostituisci con canvas se vedi solo questo JSON.",
+    "Preview PNG: designs/previews/BdIQb.png"
+  ]
+}

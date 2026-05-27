@@ -58,6 +58,10 @@ export function Editor({ initialMemeId, isLocalMode }: EditorProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [unlocked, setUnlocked] = useState(false)
   const [exporting, setExporting] = useState(false)
+  const [exportProgress, setExportProgress] = useState<{
+    current: number
+    total: number
+  } | null>(null)
   const [showMockFrame, setShowMockFrame] = useState(true)
   const [isPlaying, setIsPlaying] = useState(true)
   const [unlockingToast, setUnlockingToast] = useState<
@@ -262,6 +266,9 @@ export function Editor({ initialMemeId, isLocalMode }: EditorProps) {
             zipFilename: isHd
               ? `${baseName}-hd-video.zip`
               : `${baseName}-watermark-video.zip`,
+            onProgress: ({ index, total }) => {
+              setExportProgress({ current: index + 1, total })
+            },
           })
         } else {
           await exportZip({
@@ -274,8 +281,14 @@ export function Editor({ initialMemeId, isLocalMode }: EditorProps) {
               : `${baseName}-watermark.zip`,
           })
         }
+      } catch (err) {
+        console.error("Export failed:", err)
+        const detail =
+          err instanceof Error ? err.message : "Errore sconosciuto"
+        window.alert(`${t.studio.exportError}\n\n${detail}`)
       } finally {
         setExporting(false)
+        setExportProgress(null)
         setIsPlaying(wasPlaying)
       }
     },
@@ -300,6 +313,7 @@ export function Editor({ initialMemeId, isLocalMode }: EditorProps) {
         isLocalMode={isLocalMode}
         unlocked={unlocked}
         exporting={exporting}
+        exportProgress={exportProgress}
         hasVideo={hasVideo}
         isPlaying={isPlaying}
         onTogglePlaying={() => setIsPlaying((v) => !v)}
@@ -349,6 +363,7 @@ function Toolbar({
   isLocalMode,
   unlocked,
   exporting,
+  exportProgress,
   hasVideo,
   isPlaying,
   onTogglePlaying,
@@ -365,6 +380,7 @@ function Toolbar({
   isLocalMode: boolean
   unlocked: boolean
   exporting: boolean
+  exportProgress: { current: number; total: number } | null
   hasVideo: boolean
   isPlaying: boolean
   onTogglePlaying: () => void
@@ -376,11 +392,18 @@ function Toolbar({
   onDownloadHd: () => void
   unlockingToast: "idle" | "verifying" | "success" | "error"
 }) {
-  const hdLabel = unlocked
-    ? t.studio.download
+  const noWatermarkAvailable = unlocked || isLocalMode
+  const baseHdLabel = unlocked
+    ? t.studio.downloadUnlocked
     : isLocalMode
     ? t.studio.downloadLocal
     : t.studio.downloadHd
+  const progressLabel = exportProgress
+    ? `${t.studio.exportingProgress} ${exportProgress.current}/${exportProgress.total}`
+    : null
+  const hdLabel = exporting && progressLabel ? progressLabel : baseHdLabel
+  const watermarkedLabel =
+    exporting && progressLabel ? progressLabel : t.studio.download
 
   return (
     <header className="flex h-14 flex-shrink-0 items-center gap-3 border-b border-zinc-200 bg-white px-4 dark:border-zinc-800 dark:bg-zinc-950">
@@ -443,26 +466,30 @@ function Toolbar({
           <ImageIcon className="h-4 w-4" />
           {t.studio.add.rect}
         </Button>
-        <Button
-          onClick={onDownload}
-          variant="secondary"
-          disabled={exporting}
-          size="sm"
-        >
-          {exporting ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <Download className="h-4 w-4" />
-          )}
-          {t.studio.download}
-        </Button>
+        {!noWatermarkAvailable && (
+          <Button
+            onClick={onDownload}
+            variant="secondary"
+            disabled={exporting}
+            size="sm"
+          >
+            {exporting ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
+            {watermarkedLabel}
+          </Button>
+        )}
         <Button
           onClick={onDownloadHd}
-          variant={unlocked || isLocalMode ? "primary" : "accent"}
+          variant={noWatermarkAvailable ? "primary" : "accent"}
           disabled={exporting || unlockingToast === "verifying"}
           size="sm"
         >
-          {unlocked || isLocalMode ? (
+          {exporting && noWatermarkAvailable ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : noWatermarkAvailable ? (
             <Download className="h-4 w-4" />
           ) : (
             <Lock className="h-4 w-4" />

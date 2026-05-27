@@ -13,8 +13,48 @@ canvas di design AI-native che gira come estensione di Cursor.
 
 ## File
 
+### Marketing + editor (workshop)
+
 - `landing.pen` — la landing page (`app/page.tsx`)
 - `studio.pen` — l'editor (`components/editor/*`)
+
+### SaaS (dashboard, onboarding, profilo)
+
+- `dashboard.pen` — home progetti, dettaglio, cronologia export, empty state  
+  Target: `app/(app)/*`, `/app`, `/app/projects/[id]`
+- `onboarding.pen` — wizard 5 step post-signup  
+  Target: `app/onboarding/[step]/*`
+- `profile.pen` — impostazioni, billing ibrido (Pro + €2,99/meme), sicurezza  
+  Target: `/app/settings`, `/app/billing`
+
+### Anteprime PNG
+
+Screenshot esportati dal canvas Pencil (riferimento visivo in repo):
+
+- `previews/BdIQb.png` — dashboard progetti
+- `previews/tewVv.png` — impostazioni profilo
+- `previews/KcAYy.png` — piano e fatturazione
+- `previews/DZW7f.png` — sicurezza
+
+Per rigenerare il **canvas visivo** da un brief JSON: apri il `.pen` in Pencil →
+clic destro → **Replace with new Pencil canvas**, poi chiedi all'agente di
+ricostruire il layout dal brief o dalle PNG in `previews/`.
+
+## Design system SaaS (condiviso)
+
+| Token | Valore |
+|-------|--------|
+| Accent | `#c026d3` (fuchsia) |
+| Background | `#ffffff` / dark `#0a0a0a` |
+| Surface | `#fafafa` |
+| Border | `#e4e4e7` |
+| Display font | Anton |
+| UI font | Inter |
+
+**Billing ibrido** (come in landing + Stripe attuale):
+
+- Abbonamento **Pro** (export HD illimitati, no watermark, cloud sync)
+- **€2,99 per meme** per sblocco HD singolo su piano Free
 
 ## Workflow workshop
 
@@ -28,17 +68,16 @@ Il workflow che mostriamo all'evento:
 4. Cursor legge il `.pen` tramite gli strumenti MCP di Pencil e modifica i
    componenti React. Hot reload nel browser ti mostra il risultato.
 
-Stesso workflow per `studio.pen`: ridisegna toolbar/sidepanel/canvas e chiedi
-all'agente di aggiornare i componenti in `components/editor/`.
+Stesso workflow per `studio.pen`, `dashboard.pen`, `onboarding.pen` e
+`profile.pen`: ridisegna e chiedi all'agente di aggiornare le route SaaS
+quando implementerai auth + DB.
 
 ## Stato dei file
 
-Questi `.pen` sono i **brief di design** del progetto: descrivono in JSON la
-struttura e l'intento di ogni sezione. Al primo apertura puoi:
+I file possono essere:
 
-- **Tenerli così** e usarli come reference scritta per l'agente
-- **Sostituirli** con un canvas Pencil completo (clic destro → "Replace
-  with new Pencil canvas") — la sostituzione mantiene il nome del file
+- **Brief JSON** (`format: pencil-design-brief`) — struttura e intento per l'agente
+- **Canvas Pencil** — layout visivo editabile nell'estensione
 
 In entrambi i casi i comandi al chat di Cursor funzionano: l'agente legge il
 contenuto strutturato del file e lo applica al codice.

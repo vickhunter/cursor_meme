@@ -1,0 +1,63 @@
+{
+  "$schema": "https://pencil.dev/schemas/pen-v1.json",
+  "format": "pencil-design-brief",
+  "version": 1,
+  "name": "MemeForge — Profile SaaS",
+  "description": "Impostazioni account, billing ibrido (Pro + €2,99/meme), sicurezza.",
+  "target": {
+    "code": "app/(app)/settings/page.tsx, app/(app)/billing/page.tsx",
+    "routes": ["/app/settings", "/app/billing", "/app/settings/security"],
+    "framework": "next-app-router",
+    "styling": "tailwind-v4",
+    "language": "it"
+  },
+  "canvas": { "width": 1440, "height": 900, "background": "#ffffff" },
+  "designTokens": {
+    "accent": "#c026d3",
+    "destructive": "#ef4444",
+    "success": "#10b981",
+    "fontDisplay": "Anton",
+    "fontSans": "Inter"
+  },
+  "screens": [
+    {
+      "id": "settings",
+      "route": "/app/settings",
+      "tabs": ["Profilo", "Piano e fatturazione", "Sicurezza"],
+      "profile": {
+        "avatar": "gradient circle",
+        "fields": ["Nome visualizzato", "Email non modificabile"],
+        "preferences": ["Formato predefinito IG Post", "Anteprima watermark", "Tema sistema"]
+      },
+      "dangerZone": "Elimina account"
+    },
+    {
+      "id": "billing",
+      "route": "/app/billing",
+      "subscription": {
+        "title": "Abbonamento Pro",
+        "current": "Free",
+        "cta": ["Passa a Pro", "Gestisci abbonamento (Stripe)"],
+        "comparison": ["Watermark", "Sync cloud", "Export HD/mese"]
+      },
+      "singlePurchases": {
+        "title": "Acquisti singoli",
+        "price": "€2,99 per meme",
+        "rows": ["Promo estate", "Meme del lunedì"],
+        "note": "Hai già sbloccato HD su questo meme"
+      }
+    },
+    {
+      "id": "security",
+      "route": "/app/settings/security",
+      "rows": [
+        { "title": "Password", "action": "Cambia password" },
+        { "title": "Sessioni attive", "action": "Revoca tutte" },
+        { "title": "2FA", "action": "Configura 2FA" }
+      ]
+    }
+  ],
+  "agentNotes": [
+    "Previews: designs/previews/tewVv.png, KcAYy.png, DZW7f.png"
+  ]
+}

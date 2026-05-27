@@ -1,0 +1,67 @@
+{
+  "$schema": "https://pencil.dev/schemas/pen-v1.json",
+  "format": "pencil-design-brief",
+  "version": 1,
+  "name": "MemeForge — Onboarding SaaS",
+  "description": "Wizard post-signup in 5 step (1440×900). Canvas visivo in Pencil.",
+  "target": {
+    "code": "app/onboarding/[step]/page.tsx",
+    "routes": ["/onboarding/1", "/onboarding/2", "/onboarding/3", "/onboarding/4", "/onboarding/5"],
+    "framework": "next-app-router",
+    "styling": "tailwind-v4",
+    "language": "it"
+  },
+  "canvas": { "width": 1440, "height": 900, "background": "#ffffff" },
+  "designTokens": {
+    "accent": "#c026d3",
+    "primary": "#0a0a0a",
+    "fontDisplay": "Anton",
+    "fontSans": "Inter"
+  },
+  "chrome": {
+    "header": "MemeForge logo + progress 1-5 + Salta",
+    "footer": "Indietro / Avanti (step 5: Inizia / Apri lo Studio)",
+    "cardWidth": 560
+  },
+  "steps": [
+    {
+      "step": 1,
+      "name": "Benvenuto",
+      "title": "Un meme. Tutti i formati. Zero fatica.",
+      "subtitle": "Editor drag-and-drop, esportazione per ogni social, sync nel cloud.",
+      "actions": ["Continua con Google", "Continua con email"],
+      "legal": "Continuando accetti Termini e Privacy"
+    },
+    {
+      "step": 2,
+      "name": "Il tuo uso",
+      "title": "Come userai MemeForge?",
+      "options": ["Creator / Influencer", "Social media manager", "Agenzia", "Altro"]
+    },
+    {
+      "step": 3,
+      "name": "Formati preferiti",
+      "title": "Quali formati usi di più?",
+      "chips": ["Instagram Post", "Instagram Story", "TikTok", "Facebook", "LinkedIn", "X"],
+      "hint": "Puoi cambiarli dopo nelle impostazioni."
+    },
+    {
+      "step": 4,
+      "name": "Piano",
+      "title": "Scegli il tuo piano",
+      "plans": {
+        "free": ["Watermark MemeForge", "Salvataggio cloud", "6 formati"],
+        "pro": ["Export HD illimitati", "Niente watermark", "Sync cloud", "€9/mese"]
+      },
+      "callout": "Paga solo quando serve — Free + HD €2,99 per meme"
+    },
+    {
+      "step": 5,
+      "name": "Primo meme",
+      "checklist": ["Carica un'immagine o video", "Aggiungi testo e sticker", "Esporta in tutti i formati"],
+      "cta": "Apri lo Studio",
+      "preview": "Studio mock (toolbar + canvas gradient)"
+    }
+  ],
+  "agentNotes": ["Preview: designs/previews/LKDcZ.png (step 1)"]
+}
